@@ -6,7 +6,8 @@ export default function BugEventPropagation() {
     alert("RED BOX CLICKED ❌ Don't show me!");
   }
 
-  function handleInnerClick() {
+  function handleInnerClick(event) {
+    event.stopPropagation();
     alert('Button Clicked ✅');
   }
 
@@ -22,3 +23,5 @@ export default function BugEventPropagation() {
     </>
   );
 }
+
+// When we click the button, the event goes up to the parent element. This is called event bubbling .Event.stopPropagation() stops the event so only the button action runs.

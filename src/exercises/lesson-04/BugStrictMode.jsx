@@ -7,9 +7,12 @@ export default function BugStrictMode() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
-      setCount((c) => c + 1);
+    const id = setInterval(() => {
+      setCount((prev) => prev + 1);
     }, 1000);
+    return () => {
+      clearInterval(id);
+    };
   }, []);
 
   return (
@@ -21,3 +24,4 @@ export default function BugStrictMode() {
 }
 
 // Write your explanation of how StrictMode helps us catch this bug
+// StrictMode runs effects twice in development to help find bugs.It shows that we need to clean up things like timers,or they will run multiple times and cause problems.
