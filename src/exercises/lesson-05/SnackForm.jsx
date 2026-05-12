@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import styles from './SnackForm.module.css';
-import { input } from '@testing-library/user-event/dist/cjs/event/input.js';
 
 export default function SnackForm({
   addSnack,
@@ -76,7 +75,8 @@ export default function SnackForm({
       setTouched({ name: false, rating: false });
     }
   }
-
+  const nameError = getNameError();
+  const ratingError = getRatingError();
   return (
     <form
       onSubmit={handleSubmit}
@@ -97,7 +97,7 @@ export default function SnackForm({
           className={styles['field-input']}
           placeholder="Enter snack name"
         />
-        {getNameError() && <div className={styles.error}>{getNameError()}</div>}
+        {nameError && <div className={styles.error}>{nameError}</div>}
       </div>
 
       <div className={styles['field-container']}>
@@ -113,9 +113,7 @@ export default function SnackForm({
           className={styles['field-input']}
           placeholder="Rate 1-5"
         />
-        {getRatingError() && (
-          <div className={styles.error}>{getRatingError()}</div>
-        )}
+        {ratingError && <div className={styles.error}>{ratingError}</div>}
       </div>
 
       <div className={styles['button-container']}>
