@@ -95,14 +95,87 @@ export function surveyReducer(state, action) {
     // ===== STUDENT IMPLEMENTATION TASKS =====
 
     case 'UPDATE_QUESTION_TEXT':
-      // TODO: Implement this action
-      console.log('TODO: Implement UPDATE_QUESTION_TEXT action');
-      return state;
+      return {
+        ...state,
+        questions: state.questions.map((q) => {
+          if (q.id === action.payload.id) {
+            return {
+              ...q,
+              question: action.payload.newText,
+            };
+          }
+
+          return q;
+        }),
+      };
 
     case 'DELETE_QUESTION':
       // TODO: Implement this action
       console.log('TODO: Implement DELETE_QUESTION action');
-      return state;
+      return {
+        ...state,
+        questions: state.questions.filter((q) => {
+          return q.id !== action.payload.id;
+        }),
+        ui: {
+          ...state.ui,
+          editingQuestionId: null,
+        },
+      };
+
+    case 'ADD_OPTION_TO_QUESTION':
+      return {
+        ...state,
+        questions: state.questions.map((q) => {
+          if (
+            q.id === action.payload.questionId &&
+            q.type === QUESTION_TYPES.MULTIPLE_CHOICE
+          ) {
+            return {
+              ...q,
+              options: [...q.options, action.payload.optionText],
+            };
+          }
+          return q;
+        }),
+      };
+
+    case 'UPDATE_OPTION_TEXT':
+      return {
+        ...state,
+        questions: state.questions.map((q) => {
+          if (q.id === action.payload.questionId) {
+            return {
+              ...q,
+              options: q.options.map((option, index) => {
+                if (index === action.payload.optionIndex) {
+                  return action.payload.newText;
+                }
+                return option;
+              }),
+            };
+          }
+
+          return q;
+        }),
+      };
+
+    case 'DELETE_OPTION_FROM_QUESTION':
+      return {
+        ...state,
+        questions: state.questions.map((q) => {
+          if (q.id === action.payload.questionId) {
+            return {
+              ...q,
+              options: q.options.filter((option, index) => {
+                return index !== action.payload.optionIndex;
+              }),
+            };
+          }
+
+          return q;
+        }),
+      };
 
     default:
       return state;
